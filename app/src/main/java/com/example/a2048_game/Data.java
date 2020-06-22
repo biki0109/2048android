@@ -22,7 +22,10 @@ public class Data {
         return data;
     }
     public int getScore() { return score; }
+    public int[][] getArr() { return arr_2_Dimension; }
+
     public void init(Context context){
+        score = 0;
         for (int i = 0; i < 4; i++){
             for (int j = 0; j < 4; j++){
                 arr_2_Dimension[i][j] = 0;
@@ -52,8 +55,8 @@ public class Data {
         } else {
             int a = (int) (Math.log(data)/Math.log(2));
 
-            if(a > 15){
-                return color_array[16];
+            if(a > 14){
+                return color_array[14];
             }
 
             return color_array[a-1];
@@ -88,7 +91,7 @@ public class Data {
         while (createTitle != 0){
             int i = randomSpawn.nextInt(4), j = randomSpawn.nextInt(4);
             if (arr_2_Dimension[i][j] == 0){
-                arr_2_Dimension[i][j] = randomSpawn.nextInt(10) > 0 ? 2048 : 2048;
+                arr_2_Dimension[i][j] = randomSpawn.nextInt(10) > 0 ? 2 : 4;
                 createTitle--;
             }
         }
@@ -362,5 +365,61 @@ public class Data {
         }
 
         return  totalPoint;
+    }
+
+    public boolean checkOutOfMove(){
+        int temp = 0;
+        for(int i = 0; i < 4; i++){
+            for (int j = 0; j < 4; j++){
+                if(arr_2_Dimension[i][j] == 0){
+                    temp = 1;
+                }
+            }
+        }
+
+        if(temp == 0){
+            for (int i = 0; i < 4; i++){
+                for (int j = 0; j < 4; j++){
+                    if(i == 0){
+                        if(j == 0){
+                            if((arr_2_Dimension[i][j+1] == arr_2_Dimension[i][j]) || (arr_2_Dimension[i+1][j] == arr_2_Dimension[i][j]))
+                                return false;
+                        } else if(j == 3) {
+                            if((arr_2_Dimension[i][j-1] == arr_2_Dimension[i][j]) || (arr_2_Dimension[i+1][j] == arr_2_Dimension[i][j]))
+                                return false;
+                        } else {
+                            if((arr_2_Dimension[i][j+1] == arr_2_Dimension[i][j]) || (arr_2_Dimension[i+1][j] == arr_2_Dimension[i][j]) || (arr_2_Dimension[i][j-1] == arr_2_Dimension[i][j])){
+                                return false;
+                            }
+                        }
+                    } else if(i == 1 || i == 2){
+                        if(j == 0){
+                            if((arr_2_Dimension[i][j+1] == arr_2_Dimension[i][j]) || (arr_2_Dimension[i+1][j] == arr_2_Dimension[i][j]) || (arr_2_Dimension[i-1][j] == arr_2_Dimension[i][j]))
+                                return false;
+                        } else if(j == 3) {
+                            if((arr_2_Dimension[i][j-1] == arr_2_Dimension[i][j]) || (arr_2_Dimension[i+1][j] == arr_2_Dimension[i][j]) || (arr_2_Dimension[i-1][j] == arr_2_Dimension[i][j]))
+                                return false;
+                        } else {
+                            if((arr_2_Dimension[i][j-1] == arr_2_Dimension[i][j]) || (arr_2_Dimension[i+1][j] == arr_2_Dimension[i][j]) || (arr_2_Dimension[i-1][j] == arr_2_Dimension[i][j]) || (arr_2_Dimension[i][j+1] == arr_2_Dimension[i][j])){
+                                return false;
+                            }
+                        }
+                    } else {
+                        if(j == 0){
+                            if((arr_2_Dimension[i][j+1] == arr_2_Dimension[i][j]) || (arr_2_Dimension[i-1][j] == arr_2_Dimension[i][j]))
+                                return false;
+                        } else if(j == 3) {
+                            if((arr_2_Dimension[i][j-1] == arr_2_Dimension[i][j]) || (arr_2_Dimension[i-1][j] == arr_2_Dimension[i][j]))
+                                return false;
+                        } else {
+                            if((arr_2_Dimension[i][j+1] == arr_2_Dimension[i][j]) || (arr_2_Dimension[i-1][j] == arr_2_Dimension[i][j]) || (arr_2_Dimension[i][j-1] == arr_2_Dimension[i][j])){
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return true;
     }
 }
